@@ -3,3 +3,4 @@
 -- Add any additional keymaps here
 
 vim.keymap.set("n", "<leader>ac", ":CodeCompanionChat<CR>", { desc = "Open AI Chat" })
+vim.keymap.set("n", "<leader>ai", ":CodeCompanion<CR>", { desc = "Open AI Chat" })
