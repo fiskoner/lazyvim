@@ -13,3 +13,6 @@ vim.opt.clipboard = "unnamedplus"
 vim.keymap.set({ "n", "v" }, "d", '"_d')
 vim.keymap.set({ "n", "v" }, "D", '"_D')
 vim.keymap.set({ "n", "v" }, "x", '"_x')
+
+--session restore
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
