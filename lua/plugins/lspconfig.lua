@@ -3,25 +3,32 @@ return {
   opts = {
     servers = {
       pyright = {
-        capabilities = vim.tbl_deep_extend(
-          "force",
-          {},
-          vim.lsp.protocol.make_client_capabilities(),
-          require("cmp_nvim_lsp").default_capabilities(),
-          {
-            workspace = {
-              symbol = {
-                supportedKinds = {
-                  "File", "Module", "Namespace", "Package", "Class", "Method",
-                  "Property", "Field", "Constructor", "Enum", "Interface",
-                  "Function", "Variable", "Constant", "String", "Number",
-                  "Boolean", "Array", "Object", "Key", "Null", "EnumMember",
-                  "Struct", "Event", "Operator", "TypeParameter"
+        on_attach = function(client, bufnr)
+          -- Enable completion triggered by <c-x><c-o>
+          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+          -- Log the capabilities of the client when it attaches
+          print("Pyright capabilities: " .. vim.inspect(client.server_capabilities))
+        end,
+        capabilities = function()
+          local capabilities = vim.lsp.protocol.make_client_capabilities()
+          capabilities.textDocument.codeAction = {
+            dynamicRegistration = true,
+            codeActionLiteralSupport = {
+              codeActionKind = {
+                valueSet = {
+                  "quickfix",
+                  "refactor",
+                  "refactor.extract",
+                  "refactor.inline",
+                  "refactor.rewrite",
+                  "source",
+                  "source.organizeImports",
                 }
               }
             }
           }
-        ),
+          return capabilities
+        end,
         settings = {
           python = {
             analysis = {
@@ -29,7 +36,7 @@ return {
               useLibraryCodeForTypes = true,
               diagnosticMode = "workspace",
               indexing = true,
-              autoSearchPaths = true
+              autoSearchPaths = true,
             },
           },
         },
